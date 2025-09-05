@@ -1,0 +1,15 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.hackathon {
+    margin-top: 70px;
+    background-color: rgb(202, 21, 21);
+    width: 400px;
+    color: rgb(214, 180, 180);
+    display: flex;
+    justify-content: center;
+}
