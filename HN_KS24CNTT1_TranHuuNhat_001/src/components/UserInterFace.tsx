@@ -7,12 +7,14 @@ import AddtodoList from "./AddtodoList";
 type UsertodoList = {
   id: number;
   name: string;
+  completed: boolean;  
 };
 
 type Action =
-  | { type: "ADD"; payload: Omit<UsertodoList, "id"> }
+  | { type: "ADD"; payload: Omit<UsertodoList, "id" | "completed"> }
   | { type: "UPDATE"; payload: UsertodoList }
-  | { type: "DELETE"; payload: number };
+  | { type: "DELETE"; payload: number }
+  | { type: "TOGGLE"; payload: number }; 
 
 const listReducer = (state: UsertodoList[], action: Action): UsertodoList[] => {
   switch (action.type) {
@@ -21,6 +23,7 @@ const listReducer = (state: UsertodoList[], action: Action): UsertodoList[] => {
         ...state,
         {
           id: Date.now(),
+          completed: false,
           ...action.payload,
         },
       ];
@@ -30,11 +33,15 @@ const listReducer = (state: UsertodoList[], action: Action): UsertodoList[] => {
       );
     case "DELETE":
       return state.filter((list) => list.id !== action.payload);
-
+    case "TOGGLE":
+      return state.map((list) =>
+        list.id === action.payload ? { ...list, completed: !list.completed } : list
+      );
     default:
       return state;
   }
 };
+
 
 const UserInterFace = () => {
   const [lists, dispatch] = useReducer(listReducer, []);
